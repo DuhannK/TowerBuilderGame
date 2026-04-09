@@ -3,19 +3,24 @@ using UnityEngine;
 public class BlockSpawner : MonoBehaviour
 {
     [Header("Üretim Ayarlarý")]
-    [SerializeField] private GameObject blockPrefab; // Hangi kalýbý üreteceðiz?
-    [SerializeField] private Vector3 spawnPosition;  // Hangi koordinattan üreteceðiz?
+    // DÝKKAT: Artýk köþeli parantez [] ile bir dizi oluþturduk.
+    [SerializeField] private GameObject[] blockPrefabs;
+    [SerializeField] private float spawnHeightOffset = 6f;
 
     void Start()
     {
-        // Oyun baþladýðýnda ilk bloðu hemen sahneye çaðýrýyoruz.
         SpawnBlock();
     }
 
     public void SpawnBlock()
     {
-        // Instantiate fonksiyonu; bir objenin (blockPrefab) kopyasýný (clone) belirlediðimiz noktada yaratýr.
-        // Quaternion.identity, objenin kendi varsayýlan dönüþ (rotation) açýsýyla gelmesini saðlar.
-        Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
+        float spawnY = Camera.main.transform.position.y + spawnHeightOffset;
+        Vector3 finalSpawnPosition = new Vector3(0, spawnY, 0);
+
+        // 0 ile dizideki eleman sayýsý arasýnda rastgele bir sayý seç
+        int randomIndex = Random.Range(0, blockPrefabs.Length);
+
+        // Seçilen rastgele þekli üret
+        Instantiate(blockPrefabs[randomIndex], finalSpawnPosition, Quaternion.identity);
     }
 }

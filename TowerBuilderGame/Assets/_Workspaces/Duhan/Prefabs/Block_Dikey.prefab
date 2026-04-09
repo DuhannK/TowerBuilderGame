@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3470925805984410978}
   - component: {fileID: 5299950220936923545}
   m_Layer: 0
-  m_Name: TestBlock
+  m_Name: Block_Dikey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -96,7 +96,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 8408861759171349863}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0b16f704b58e0ed4ba6df34fbd689163, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -130,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.97, y: 0.97}
   m_EdgeRadius: 0
 --- !u!50 &3470925805984410978
 Rigidbody2D:
@@ -171,5 +171,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6d0f3d49203d64ca98eaa2522dc829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 1
+  gridSize: 0.5
   fallSpeed: 3

@@ -3,25 +3,28 @@ using UnityEngine;
 public class BlockController : MonoBehaviour
 {
     [Header("Blok Ayarlarý")]
-    // [SerializeField] komutu, deðiþkenin Unity arayüzünde (Inspector) görünmesini saðlar.
-    [SerializeField] private float gridSize = 1f; // Bloðun saða/sola ne kadar kayacaðý (ýzgara boyutu)
-    [SerializeField] private float fallSpeed = 2f; // Bloðun aþaðý düþme hýzý
+    [SerializeField] private float gridSize = 0.5f;
+    [SerializeField] private float fallSpeed = 3f; // Senin belirlediðin hýz
 
-    // Rigidbody2D'ye kod içinden ulaþmak için bir deðiþken oluþturuyoruz.
     private Rigidbody2D rb;
+    private bool isLanded = false;
 
     void Start()
     {
-        // Oyun (veya blok) baþladýðýnda, bloðun üzerindeki Rigidbody2D bileþenini bul ve 'rb' içine kaydet.
         rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+
+        // Boyutla oynamýyoruz çünkü sen en mükemmel 0.97 deðerini buldun!
+        // Sadece düþerken saða sola yamulmasýný kilitliyoruz.
+        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
     }
 
     void Update()
     {
-        // --- 1. SABÝT HIZLA AÞAÐI DÜÞME ---
+        if (isLanded) return;
+
         transform.position += Vector3.down * fallSpeed * Time.deltaTime;
 
-        // --- 2. SAÐA VE SOLA KAYMA ---
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             transform.position += new Vector3(-gridSize, 0, 0);
@@ -32,21 +35,25 @@ public class BlockController : MonoBehaviour
         }
     }
 
-    // --- 3. ÇARPIÞMA (COLLISION) ALGILAMA ---
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Eðer zaten çarptýysa (kod kapalýysa) alt satýrlarý tekrar çalýþtýrma (Güvenlik önlemi)
-        if (!this.enabled) return;
+        if (isLanded) return;
 
-        this.enabled = false;
-
-        if (rb != null)
+        // Sadece alttan temas varsa çalýþýr
+        if (collision.contacts[0].normal.y > 0.5f)
         {
-            rb.gravityScale = 1f;
-        }
+            isLanded = true;
 
-        // --- YENÝ EKLENEN KISIM ---
-        // Sahnede 'BlockSpawner' kodunu taþýyan objeyi bul ve içindeki 'SpawnBlock' fonksiyonunu çalýþtýr.
-        FindObjectOfType<BlockSpawner>().SpawnBlock();
+            // Yere deðdiði an kilitleri aç ve kule fiziðine dahil et
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.gravityScale = 1f;
+
+            if (transform.position.y > CameraController.highestY)
+            {
+                CameraController.highestY = transform.position.y;
+            }
+
+            FindObjectOfType<BlockSpawner>().SpawnBlock();
+        }
     }
 }

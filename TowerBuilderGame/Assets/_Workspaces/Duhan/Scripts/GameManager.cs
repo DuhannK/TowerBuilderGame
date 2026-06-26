@@ -171,9 +171,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (p1Score > p2Score) txtWinner.text = "🏆 1. OYUNCU KAZANDI! 🏆";
-            else if (p2Score > p1Score) txtWinner.text = "🏆 2. OYUNCU KAZANDI! 🏆";
-            else txtWinner.text = "🤝 BERABERE! 🤝";
+            if (p1Score > p2Score) txtWinner.text = " 1. OYUNCU KAZANDI! ";
+            else if (p2Score > p1Score) txtWinner.text = " 2. OYUNCU KAZANDI! ";
+            else txtWinner.text = " BERABERE! ";
 
             txtScores.text = "1. Oyuncu: " + p1Score + "\n2. Oyuncu: " + p2Score;
         }
